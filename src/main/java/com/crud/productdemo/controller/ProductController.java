@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/producto")
+@RequestMapping("/productX")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
 
@@ -27,11 +27,11 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ProductXDto productoDto){
-        if(productXService.existsByDiscountCode(productoDto.getDiscountCode()))
+        if(productoDto.getDiscountCode()!=null && productXService.existsByDiscountCode(productoDto.getDiscountCode()))
             return new ResponseEntity(new Message("Discount code repeated"), HttpStatus.BAD_REQUEST);
         ProductX producto = new ProductX(productoDto.getEmail(), productoDto.getCount(), productoDto.getDiscountCode());
         productXService.save(producto);
-        return new ResponseEntity(new Message("ProductX ordered"), HttpStatus.OK);
+        return new ResponseEntity(new Message("ProductX succesfully ordered"), HttpStatus.OK);
     }
 
 }
