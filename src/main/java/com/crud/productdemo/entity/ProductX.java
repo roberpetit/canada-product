@@ -12,16 +12,23 @@ import javax.persistence.Id;
 public class ProductX {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     private String email;
     private Long count;
     private Integer discountCode;
 
+    public ProductX() {
+    }
 
     public ProductX(String email, Long count, Integer discountCode) {
+        this.id = generateUniqueId();
         this.email = email;
         this.count = count;
         this.discountCode = discountCode;
+    }
+
+    private String generateUniqueId() {
+        return String.valueOf(System.currentTimeMillis()).substring(3, 12);
     }
 }

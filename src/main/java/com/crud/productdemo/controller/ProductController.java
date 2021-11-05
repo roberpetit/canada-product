@@ -26,10 +26,14 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody ProductXDto productoDto){
-        if(productoDto.getDiscountCode()!=null && productXService.existsByDiscountCode(productoDto.getDiscountCode()))
+    public ResponseEntity<?> create(@RequestBody ProductXDto productXDto){
+        if(productXDto.getDiscountCode()!=null && productXService.existsByDiscountCode(productXDto.getDiscountCode()))
             return new ResponseEntity(new Message("Discount code repeated"), HttpStatus.BAD_REQUEST);
-        ProductX producto = new ProductX(productoDto.getEmail(), productoDto.getCount(), productoDto.getDiscountCode());
+        if(productXDto.getCount()<1) {
+            return new ResponseEntity(new Message("At least one product must be ordered"), HttpStatus.BAD_REQUEST);
+        }
+
+        ProductX producto = new ProductX(productXDto.getEmail(), productXDto.getCount(), productXDto.getDiscountCode());
         productXService.save(producto);
         return new ResponseEntity(new Message("ProductX succesfully ordered"), HttpStatus.OK);
     }
