@@ -27,20 +27,11 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ProductXDto productoDto){
-        if(productXService.existsByDiscountCode(productoDto.getDiscountCode())
-            return new ResponseEntity(new Message("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-        ProductX producto = new ProductX(productoDto.getNombre(), productoDto.getPrecio());
+        if(productXService.existsByDiscountCode(productoDto.getDiscountCode()))
+            return new ResponseEntity(new Message("Discount code repeated"), HttpStatus.BAD_REQUEST);
+        ProductX producto = new ProductX(productoDto.getEmail(), productoDto.getCount(), productoDto.getDiscountCode());
         productXService.save(producto);
-        return new ResponseEntity(new Message("producto creado"), HttpStatus.OK);
+        return new ResponseEntity(new Message("ProductX ordered"), HttpStatus.OK);
     }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id")int id){
-        if(!productXService.existsById(id))
-            return new ResponseEntity(new Message("no existe"), HttpStatus.NOT_FOUND);
-        productXService.delete(id);
-        return new ResponseEntity(new Message("producto eliminado"), HttpStatus.OK);
-    }
-
 
 }

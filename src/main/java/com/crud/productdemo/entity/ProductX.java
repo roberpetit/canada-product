@@ -19,4 +19,9 @@ public class ProductX {
     private Integer discountCode;
 
 
+    public ProductX(String email, Long count, Integer discountCode) {
+        this.email = email;
+        this.count = count;
+        this.discountCode = discountCode;
+    }
 }
